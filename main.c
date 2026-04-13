@@ -1,8 +1,8 @@
 // NOM prénom étudiant 1 : SAFI Noorsaba
-// NOM prévnom étudiant 2 : PHAM Nguyen Thuy Tien
+// NOM prévnom étudiant 2 : PHAM Nguyen Thuy TienSaba
 
 #include "SDL.h"
-#include "maSDL.h" //bibliothèque avec des fonctions d'affichage utilisant la SDL
+#include "maSDL.h" // bibliothèque avec des fonctions d'affichage utilisant la SDL
 #include "towerdefend.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,40 +22,37 @@ int main(int argc, char *argv[])
         HAUTEURJEU * 40,
         SDL_WINDOW_SHOWN);
 
-    // SDL_Renderer * renderer = SDL_CreateRenderer(pWindow, -1, 0);  //non utilisé, pour mémoire
+    // SDL_Renderer * renderer = SDL_CreateRenderer(pWindow, -1, 0);  // non utilisé, pour mémoire
 
-    SDL_Surface *pWinSurf = SDL_GetWindowSurface(pWindow);                 // le sprite qui couvre tout l'écran
-    SDL_Surface *pSpriteTourSol = SDL_LoadBMP("./data/TourSol.bmp");       // indice 0 dans tabSprite (via l'enum TuniteDuJeu)
-    SDL_Surface *pSpriteTourAir = SDL_LoadBMP("./data/TourAir.bmp");       // indice 1 dans tabSprite (via l'enum TuniteDuJeu)
-    SDL_Surface *pSpriteTourRoi = SDL_LoadBMP("./data/TourRoi.bmp");       // indice 2
-    SDL_Surface *pSpriteArcher = SDL_LoadBMP("./data/Archer.bmp");         // indice 3
-    SDL_Surface *pSpriteChevalier = SDL_LoadBMP("./data/Chevalier.bmp");   // indice 4
-    SDL_Surface *pSpriteDragon = SDL_LoadBMP("./data/Dragon.bmp");         // indice 5
-    SDL_Surface *pSpriteGargouille = SDL_LoadBMP("./data/Gargouille.bmp"); // indice 6
-    SDL_Surface *pSpriteEau = SDL_LoadBMP("./data/Eau.bmp");               // indice 7  Ne figure pas dans l'enum TuniteDuJeu
-    SDL_Surface *pSpriteHerbe = SDL_LoadBMP("./data/Herbe.bmp");           // indice 8 idem
-    SDL_Surface *pSpritePont = SDL_LoadBMP("./data/Pont.bmp");             // indice 9 idem
-    SDL_Surface *pSpriteTerre = SDL_LoadBMP("./data/Terre.bmp");           // indice 10 idem
+    SDL_Surface *pWinSurf = SDL_GetWindowSurface(pWindow);
+    SDL_Surface *pSpriteTourSol = SDL_LoadBMP("./data/TourSol.bmp");
+    SDL_Surface *pSpriteTourAir = SDL_LoadBMP("./data/TourAir.bmp");
+    SDL_Surface *pSpriteTourRoi = SDL_LoadBMP("./data/TourRoi.bmp");
+    SDL_Surface *pSpriteArcher = SDL_LoadBMP("./data/Archer.bmp");
+    SDL_Surface *pSpriteChevalier = SDL_LoadBMP("./data/Chevalier.bmp");
+    SDL_Surface *pSpriteDragon = SDL_LoadBMP("./data/Dragon.bmp");
+    SDL_Surface *pSpriteGargouille = SDL_LoadBMP("./data/Gargouille.bmp");
+    SDL_Surface *pSpriteEau = SDL_LoadBMP("./data/Eau.bmp");
+    SDL_Surface *pSpriteHerbe = SDL_LoadBMP("./data/Herbe.bmp");
+    SDL_Surface *pSpritePont = SDL_LoadBMP("./data/Pont.bmp");
+    SDL_Surface *pSpriteTerre = SDL_LoadBMP("./data/Terre.bmp");
 
-    // ASTUCE : on stocke le sprite d'une unité à l'indice de son nom dans le type enum TuniteDuJeu, dans le tableau TabSprite
-    // SAUF pour l'Eau, l''herbe et le pont qui apparaitront en l absence d'unité (NULL dans le plateau) et en foction de certains indices x,y définissant le chemin central
-    SDL_Surface *TabSprite[11] = {pSpriteTourSol, pSpriteTourAir, pSpriteTourRoi, pSpriteArcher, pSpriteChevalier, pSpriteDragon, pSpriteGargouille, pSpriteEau, pSpriteHerbe, pSpritePont, pSpriteTerre};
+    SDL_Surface *TabSprite[11] = {
+        pSpriteTourSol, pSpriteTourAir, pSpriteTourRoi,
+        pSpriteArcher, pSpriteChevalier, pSpriteDragon,
+        pSpriteGargouille, pSpriteEau, pSpriteHerbe,
+        pSpritePont, pSpriteTerre};
 
-    srand(time(NULL));                // Tien:
-    int **tabParcours = initChemin(); // tabParcours est un tableau de NBCOORDPARCOURS cases, chacune contenant un tableau à 2 cases (indice 0 pour X, indice 1 pour Y)
-    for (int i = 0; i < NBCOORDPARCOURS; i++)
-    {
-    }
-    if (pSpriteTourSol) // si le permier sprite a bien été chargé, on suppose que les autres aussi
+    srand(time(NULL));
+    int **tabParcours = initChemin();
+
+    if (pSpriteTourSol) // si le premier sprite a bien été chargé, on suppose que les autres aussi
     {
         TplateauJeu jeu = AlloueTab2D(LARGEURJEU, HAUTEURJEU);
         initPlateauAvecNULL(jeu, LARGEURJEU, HAUTEURJEU);
-        //       affichePlateauConsole(jeu,LARGEURJEU,HAUTEURJEU);
 
         prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
         maj_fenetre(pWindow);
-
-        // A COMMENTER quand vous en aurez assez de cliquer sur ces popups ^^
 
         message("Welcome in TowerDfend", "Ceci est un point de depart pour votre future interface de votre jeu TowerDefend");
         message("et fin", "ECHAP->quitter, S/C ET D/V les gerer les sauvegardes");
@@ -65,98 +62,70 @@ int main(int argc, char *argv[])
         /*              DEFINISSEZ/INITIALISER ICI VOS VARIABLES              */
         /*                                                                    */
 
-        // Tien: Listes des joueurs
-        TListePlayer playerRoi = NULL;   // Tien: Joueur défenseur (tours)
-        TListePlayer playerHorde = NULL; // Tien: Joueur attaquant (horde)
+        TListePlayer playerRoi = NULL;   // Joueur défenseur
+        TListePlayer playerHorde = NULL; // Joueur attaquant
 
-        // Tien:
-        AjouterUnite(&playerRoi, creeTourRoi(tabParcours[NBCOORDPARCOURS - 1][X], tabParcours[NBCOORDPARCOURS - 1][Y]));
-        AjouterUnite(&playerHorde, creeUniteHordeAleatoire(tabParcours[0][X], tabParcours[0][Y]));
+        AjouterUnite(&playerRoi, creeTourRoi(tabParcours[NBCOORDPARCOURS - 1][X],
+                                             tabParcours[NBCOORDPARCOURS - 1][Y]));
+        AjouterUnite(&playerHorde, creeUniteHordeAleatoire(tabParcours[0][X],
+                                                           tabParcours[0][Y]));
 
-        // FIN de vos variables                                                              */
         /**********************************************************************/
 
         // boucle principale du jeu
         int cont = 1;
         int tours = 0;
-        int max_tours = 500; // si le Roi tient 500 tours il gagne
-        //       int unique = 1;  //a supprimer c'est utiliser pour la démo de dessineAttaque
 
         while (cont != 0)
-        {                                                     // VOUS DEVEZ GERER (DETECTER) LA FIN DU JEU -> tourRoiDetruite
-            SDL_PumpEvents();                                 // do events
-            initPlateauAvecNULL(jeu, LARGEURJEU, HAUTEURJEU); // Tien:
-            PositionnePlayerOnPlateau(playerRoi, jeu);        // Tien:
-            PositionnePlayerOnPlateau(playerHorde, jeu);      // Tien:
+        {
+            SDL_PumpEvents();
+
+            initPlateauAvecNULL(jeu, LARGEURJEU, HAUTEURJEU);
+            PositionnePlayerOnPlateau(playerRoi, jeu);
+            PositionnePlayerOnPlateau(playerHorde, jeu);
+
             efface_fenetre(pWinSurf);
             prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
 
             /***********************************************************************/
             /*                                                                     */
+            /*                  APPELEZ ICI VOS FONCTIONS DU JEU                   */
             /*                                                                     */
-            // APPELEZ ICI VOS FONCTIONS QUI FONT EVOLUER LE JEU
 
-            // a supprimer, c'est juste pour attirer votre attention sur comment est gèré le chemin (un tableau 2D de coordonnées)(regarder le corps de afficheCoordonneesParcours)
-            //                afficheCoordonneesParcours(tabParcours,NBCOORDPARCOURS);
-
-            /* dans votre fonction "combat" que vous appelerez ici, dans son code utiliser dessineAttaque
-
-            //exemple d'appel de dessineAttaque (factice car les unités n'appartiennent pas ici aucune liste d'unité (ni à la horde ni au Roi)
-            // c'est juste pour la démo, a supprimer donc
-            */
-
-            /*               if (unique % 10 == 0) {
-                                     printf("dessine Attaque %d\n", unique);
-                                     dessineAttaque(pWinSurf, creeTourAir(4,15),creeDragon(5,17));
-                                     dessineAttaque(pWinSurf, creeDragon(5,17),creeTourRoi(4,1));
-                            } else printf("dessine Attaque %d\n", unique);
-                            unique++;
-            */
-            // utiliser dessineAttaque dans votre fonction de combat va vous obliger à ajouter un argument lié à la SDL
-            // -> SDL_Surface *surface
-            // regarder le prototype de dessineAttaque dans maSDL.c pour (mieux) comprendre
-
-            // Tien:
-
+            // 1) Remise à 1 de peutAttaquer pour toutes les unités
             reinitialiseAttaque(playerRoi);
             reinitialiseAttaque(playerHorde);
 
-            phaseDeplacement(playerHorde, jeu, tabParcours);
+            // 2) Phase combat
             phaseCombat(pWinSurf, jeu, playerRoi, &playerHorde);
             phaseCombat(pWinSurf, jeu, playerHorde, &playerRoi);
-            phaseCreation(jeu, tabParcours, &playerRoi, &playerHorde);
+
+            // 3) Phase déplacement
+            phaseDeplacement(playerHorde, jeu, tabParcours);
+
+            // 4) Phase création
+            phaseCreation(jeu, tabParcours, &playerRoi, &playerHorde, tours);
+
             tours++;
+
+            // Fin du jeu : la Horde gagne si la tour du Roi est détruite
             if (tourRoiDetruite(playerRoi))
             {
                 cont = 0;
-                message("Fin de partie", "La Horde a detruit la Tour du Roi !");
-            }
-            if (tours >= max_tours)
-            {
-                cont = 0;
-                message("Fin de partie", "Le Roi a resiste ! Victoire des defenseurs !");
+                message("Fin de partie!", "La Horde a detruit la Tour du Roi !");
             }
 
-            /*                                                                     */
-            /*                                                                     */
-            // FIN DE VOS APPELS
             /***********************************************************************/
+
             // affichage du jeu à chaque tour
             maj_fenetre(pWindow);
-            SDL_Delay(150); // valeur du délai à modifier éventuellement
+            SDL_Delay(150);
 
             // LECTURE DE CERTAINES TOUCHES POUR LANCER LES RESTAURATIONS ET SAUVEGARDES
             const Uint8 *pKeyStates = SDL_GetKeyboardState(NULL);
+
             if (pKeyStates[SDL_SCANCODE_V])
             {
-                /* Ajouter vos appels de fonctions ci-dessous qd le joueur appuye sur D */
-
-                // APPELEZ ICI VOTRE FONCTION DE SAUVEGARDE/RESTAURATION DEMANDEE
-
-                //                        message("Sauvegarde","Placer ici votre fonction de restauration/sauvegarde");
-
-                // Tien:
-
                 if (restaurationSequentiel(PARTIESEQ, jeu, LARGEURJEU, HAUTEURJEU) == EXIT_SUCCESS)
                 {
                     updatePlayerListsDepuisPlateau(jeu, &playerRoi, &playerHorde);
@@ -167,21 +136,14 @@ int main(int argc, char *argv[])
                     message("Restauration sequentielle", "Echec");
                 }
 
-                // Ne pas modifiez les 4 lignes ci-dessous
                 efface_fenetre(pWinSurf);
                 prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
                 maj_fenetre(pWindow);
                 SDL_Delay(300);
             }
+
             if (pKeyStates[SDL_SCANCODE_C])
             {
-                /* Ajouter vos appels de fonctions ci-dessous qd le joueur appuye sur C */
-
-                // APPELEZ ICI VOTRE FONCTION DE SAUVEGARDE/RESTAURATION DEMANDEE
-
-                //                       message("Sauvegarde","Placer ici votre fonction de restauration/sauvegarde");
-
-                // Tien:
                 if (restaurationBinaire(PARTIEBIN, jeu, LARGEURJEU, HAUTEURJEU) == EXIT_SUCCESS)
                 {
                     updatePlayerListsDepuisPlateau(jeu, &playerRoi, &playerHorde);
@@ -192,20 +154,14 @@ int main(int argc, char *argv[])
                     message("Restauration binaire", "Echec");
                 }
 
-                // Ne pas modifiez les 4 lignes ci-dessous
                 efface_fenetre(pWinSurf);
                 prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
                 maj_fenetre(pWindow);
                 SDL_Delay(300);
             }
+
             if (pKeyStates[SDL_SCANCODE_D])
             {
-                /* Ajouter vos appels de fonctions ci-dessous qd le joueur appuye sur D */
-
-                // APPELEZ ICI VOTRE FONCTION DE SAUVEGARDE/RESTAURATION DEMANDEE
-                //                       message("Sauvegarde","Placer ici votre fonction de restauration/sauvegarde");
-
-                // Tien:
                 if (sauvegardeSequentiel(PARTIESEQ, jeu, LARGEURJEU, HAUTEURJEU) == EXIT_SUCCESS)
                 {
                     message("Sauvegarde sequentielle", "Partie sauvegardée dans 'partieseq.tds'");
@@ -215,20 +171,14 @@ int main(int argc, char *argv[])
                     message("Sauvegarde sequentielle", "Echec");
                 }
 
-                // Ne pas modifiez les 4 lignes ci-dessous
                 efface_fenetre(pWinSurf);
                 prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
                 maj_fenetre(pWindow);
                 SDL_Delay(300);
             }
+
             if (pKeyStates[SDL_SCANCODE_S])
             {
-                /* Ajouter vos appels de fonctions ci-dessous qd le joueur appyue sur S */
-
-                // APPELEZ ICI VOTRE FONCTION DE SAUVEGARDE/RESTAURATION DEMANDEE
-                //                      message("Sauvegarde","Placer ici votre fonction de restauration/sauvegarde");
-
-                // Tien:
                 if (sauvegardeBinaire(PARTIEBIN, jeu, LARGEURJEU, HAUTEURJEU) == EXIT_SUCCESS)
                 {
                     message("Sauvegarde binaire", "Partie sauvegardée dans 'partiebin.tdb'");
@@ -238,25 +188,24 @@ int main(int argc, char *argv[])
                     message("Sauvegarde binaire", "Echec");
                 }
 
-                // Ne pas modifiez les 4 lignes ci-dessous
                 efface_fenetre(pWinSurf);
                 prepareAllSpriteDuJeu(jeu, tabParcours, LARGEURJEU, HAUTEURJEU, TabSprite, pWinSurf);
                 maj_fenetre(pWindow);
                 SDL_Delay(300);
             }
+
             if (pKeyStates[SDL_SCANCODE_ESCAPE])
             {
-                cont = 0; // sortie de la boucle
+                cont = 0;
             }
         }
 
-        // Tien: Libération de la mémoire
+        // Libération de la mémoire
         libererListePlayer(&playerRoi, 0);
         libererListePlayer(&playerHorde, 0);
-        libererPlateau(jeu, LARGEURJEU, HAUTEURJEU); // Tien:
+        libererPlateau(jeu, LARGEURJEU, HAUTEURJEU);
 
-        // fin boucle du jeu
-        SDL_FreeSurface(pSpriteTourSol); // Libération de la ressource occupée par le sprite
+        SDL_FreeSurface(pSpriteTourSol);
         SDL_FreeSurface(pSpriteTourAir);
         SDL_FreeSurface(pSpriteTourRoi);
         SDL_FreeSurface(pSpriteArcher);
